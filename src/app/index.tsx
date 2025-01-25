@@ -37,7 +37,7 @@ const Main = () => {
             <Image source={require('@/assets/images/logo_t.png')} style={splashStyles.img} />
             <CustomText variant='h5' fontFamily='Medium' style={splashStyles.text}>Made in 🇮🇳</CustomText>
         </View>
-    )
+    );
 }
 
 export default Main

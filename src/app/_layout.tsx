@@ -7,8 +7,10 @@ const AppNavigation = () => {
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name='index' />
             <Stack.Screen name='role' />
+            <Stack.Screen name='customer/auth' />
+            <Stack.Screen name='captain/auth' />
         </Stack>
-    )
+    );
 }
 
 export default gestureHandlerRootHOC(AppNavigation)
