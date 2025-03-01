@@ -87,7 +87,7 @@ export const WSProvider: React.FC<{ children: React.ReactNode }> = ({
   )
 };
 
-const useWS = (): WSService => {
+export const useWS = (): WSService => {
   const socketService = useContext(WSContext);
   if (!socketService) {
     throw new Error("useWS must be used inside a WSProvider")

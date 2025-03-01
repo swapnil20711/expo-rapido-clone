@@ -1,4 +1,4 @@
-import { Image, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { authStyles } from '@/styles/authStyles'
@@ -6,13 +6,18 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import CustomText from '@/components/shared/CustomText'
 import { commonStyles } from '@/styles/commonStyles'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Card, Searchbar, TextInput, useTheme } from 'react-native-paper'
+import { Button, Card, Searchbar, TextInput, useTheme } from 'react-native-paper'
 import countries from '@/assets/country_codes.json'
 import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list'
 import { getLocales } from 'expo-localization';
 import { Country } from '@/model/Country'
 import CountryPickerCard from '@/components/shared/CountryPickerCard'
+import { Colors } from '@/utils/Constants'
+import { signin } from '@/service/authService'
+import { useWS } from '@/service/WSProvider'
+import { useUserStore } from '@/store/useUserStore'
+import { useRiderStore } from '@/store/useRiderStore'
 
 const Auth = () => {
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -24,6 +29,10 @@ const Auth = () => {
     const countryCode = selectedCountry?.dial_code ?? currentCountry[0]?.dial_code
     const [searchedCountry, setSearchedCountry] = useState('');
     const [filteredCountries, setFilteredCountries] = useState([]);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const { updateAccessTokens } = useWS();
+    const { setUser } = useUserStore();
+    const { setRiderUser } = useRiderStore();
 
     useEffect(() => {
         if (searchedCountry.length > 0) {
@@ -33,6 +42,14 @@ const Auth = () => {
             setFilteredCountries(filteredCountries as any)
         }
     }, [searchedCountry])
+
+    const handleNext = () => {
+        if (!phoneNumber && phoneNumber.length != 10) {
+            Alert.alert("Bro please enter your number")
+            return
+        }
+        signin({ role: "customer", phone: phoneNumber }, updateAccessTokens, setUser, setRiderUser)
+    }
 
     return (
         <SafeAreaView style={authStyles.container} edges={['top', 'bottom']}>
@@ -58,12 +75,31 @@ const Auth = () => {
                             <CustomText variant='h6'>{`${emoji} ${countryCode}`}</CustomText>
                         </TouchableOpacity>
                         <TextInput
+                            value={phoneNumber}
+                            onChangeText={(text) => {
+                                setPhoneNumber(text)
+                            }}
                             mode='outlined'
                             inputMode='tel'
                             style={{ backgroundColor: "#fff", flex: 1 }}
                             placeholder='836-4588-33596' />
                     </View>
                 </ScrollView>
+                <View style={authStyles.footerContainer}>
+                    <CustomText
+                        variant='h8'
+                        fontFamily="Regular"
+                        style={[commonStyles.lightText, { textAlign: "center", marginHorizontal: 20 }]}>
+                        By continuing, you agree to the terms and privacy policy of the Ride App.
+                    </CustomText>
+                    <Button
+                        onPress={handleNext}
+                        style={{ marginTop: 14 }}
+                        buttonColor={Colors.primary}
+                        mode="contained">
+                        Next
+                    </Button>
+                </View>
                 <BottomSheet
                     enablePanDownToClose
                     snapPoints={['90%']}

@@ -20,9 +20,7 @@ export const authStyles = StyleSheet.create({
     footerContainer: {
         position: 'absolute',
         bottom: Platform.OS === 'android' ? 20 : 30,
-        width: screenWidth,
         padding: 10,
-        justifyContent: 'center',
-        alignItems: "center"
+        justifyContent: 'center'
     }
 })

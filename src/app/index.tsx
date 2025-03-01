@@ -1,11 +1,19 @@
-import { View, Image } from 'react-native'
+import { View, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { commonStyles } from '@/styles/commonStyles'
 import { splashStyles } from '@/styles/splashStyles'
 import CustomText from '@/components/shared/CustomText'
 import { useFonts } from 'expo-font'
 import { resetAndNavigate } from '@/utils/Helpers'
+import { useUserStore } from '@/store/useUserStore'
+import { tokenStorage } from '@/store/storage'
+import { jwtDecode } from 'jwt-decode'
+import { refreshTokens } from '@/service/apiInterceptors'
+import { logout } from '@/service/authService'
 
+type DecodedToken = {
+    exp: number
+}
 const Main = () => {
     const [loaded] = useFonts({
         Bold: require("@/assets/fonts/NotoSans-Bold.ttf"),
@@ -15,9 +23,44 @@ const Main = () => {
         SemiBold: require("@/assets/fonts/NotoSans-SemiBold.ttf")
     })
     const [hasNavigated, setHasNavigated] = useState(false);
+    const { user } = useUserStore();
 
     const checkToken = async () => {
+        const accessToken = tokenStorage.getString("access_token") as string
+        const refreshToken = tokenStorage.getString("refresh_token") as string
+
+        if (accessToken) {
+            const decodedAccessToken = jwtDecode<DecodedToken>(accessToken);
+            const decodedRefreshToken = jwtDecode<DecodedToken>(refreshToken);
+
+            const currentTime = Date.now() / 1000;
+
+            if (decodedRefreshToken.exp < currentTime) {
+                logout()
+                Alert.alert("Session Expired, please login again!")
+            }
+
+            if (decodedAccessToken.exp < currentTime) {
+                try {
+                    refreshTokens();
+                } catch (e) {
+                    console.log(e)
+                    Alert.alert("Error refeshing token")
+                }
+            }
+
+            if (user !== null) {
+                resetAndNavigate("/customer/home")
+                return
+            }
+            else {
+                resetAndNavigate("/captain/home")
+                return
+            }
+        }
+
         resetAndNavigate("/role")
+
     }
 
     useEffect(() => {

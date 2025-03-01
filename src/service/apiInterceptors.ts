@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./config";
 import { tokenStorage } from "@/store/storage";
+import { logout } from "./authService";
 
 export const appAxios = axios.create({
   baseURL: BASE_URL,
@@ -50,6 +51,3 @@ appAxios.interceptors.request.use(
     }
   }
 );
-function logout() {
-  throw new Error("Function not implemented.");
-}
