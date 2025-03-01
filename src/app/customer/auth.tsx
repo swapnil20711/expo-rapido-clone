@@ -52,7 +52,7 @@ const Auth = () => {
     }
 
     return (
-        <SafeAreaView style={authStyles.container} edges={['top', 'bottom']}>
+        <View style={authStyles.container}>
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={commonStyles.flexRowBetween}>
@@ -139,7 +139,7 @@ const Auth = () => {
                     </BottomSheetScrollView>
                 </BottomSheet>
             </GestureHandlerRootView>
-        </SafeAreaView>
+        </View>
     );
 }
 
