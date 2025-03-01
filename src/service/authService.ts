@@ -25,8 +25,7 @@ export const signin = async (
 
     tokenStorage.set("access_token", res.data.access_token);
     tokenStorage.set("refresh_token", res.data.refresh_token);
-
-    if (res.data.role === "customer") {
+    if (res.data.user.role === "customer") {
       resetAndNavigate("/customer/home");
     } else {
       resetAndNavigate("/captain/home");
@@ -36,12 +35,14 @@ export const signin = async (
     Alert.alert("Error sign in");
   }
 };
-export const logout = async (disconnect?: () => void) => {
+export const logout = async (
+  clearData: () => void,
+  clearRiderData: () => void,
+  disconnect?: () => void
+) => {
   if (disconnect) {
     disconnect();
   }
-  const { clearData } = useUserStore();
-  const { clearRiderData } = useRiderStore();
 
   clearData();
   clearRiderData();

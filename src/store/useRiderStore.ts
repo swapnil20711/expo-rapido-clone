@@ -10,7 +10,7 @@ export const useRiderStore = create<RiderStoreProps>()(
       user: null,
       location: null,
       onDuty: false,
-      setUser: (data: any) => set({ user: data }),
+      setRiderUser: (data: any) => set({ user: data }),
       setLocation: (data: any) => set({ location: data }),
       clearRiderData: () => set({ user: null, location: null }),
       setOnDuty: (data: any) => set({ onDuty: data }),

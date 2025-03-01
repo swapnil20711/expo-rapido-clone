@@ -6,7 +6,9 @@ export const uiStyles = StyleSheet.create({
     absoluteTop: {
         zIndex: 1,
         position: "absolute",
-        top: 0
+        top: 0,
+        left: 0,
+        right: 0
     },
     container: {
         flexDirection: 'row',
@@ -26,7 +28,7 @@ export const uiStyles = StyleSheet.create({
         shadowColor: '#000',
         elevation: 10,
         alignItems: 'center',
-        padding: 6
+        padding: 10
     },
     dot: {
         width: 6,
@@ -35,11 +37,9 @@ export const uiStyles = StyleSheet.create({
         borderRadius: 100,
         marginHorizontal: 10
     },
-    locationBar: {
-        width: '88%',
+    searchBar: {
+        flex: 1,
         backgroundColor: "white",
-        borderRadius: 10,
-        height: 38,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
@@ -48,6 +48,22 @@ export const uiStyles = StyleSheet.create({
         gap: 1,
         alignItems: 'center',
         flexDirection: 'row',
+        marginStart: 14
+    },
+    locationBar: {
+        flex: 1,
+        backgroundColor: "white",
+        shadowOffset: { width: 1, height: 1 },
+        height: 38,
+        borderRadius: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowColor: '#000',
+        elevation: 10,
+        gap: 1,
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginStart: 14
     },
     locationText: {
         width: '86%',

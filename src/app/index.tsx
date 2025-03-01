@@ -10,6 +10,7 @@ import { tokenStorage } from '@/store/storage'
 import { jwtDecode } from 'jwt-decode'
 import { refreshTokens } from '@/service/apiInterceptors'
 import { logout } from '@/service/authService'
+import { useRiderStore } from '@/store/useRiderStore'
 
 type DecodedToken = {
     exp: number
@@ -23,7 +24,8 @@ const Main = () => {
         SemiBold: require("@/assets/fonts/NotoSans-SemiBold.ttf")
     })
     const [hasNavigated, setHasNavigated] = useState(false);
-    const { user } = useUserStore();
+    const { user, clearData } = useUserStore();
+    const { clearRiderData } = useRiderStore();
 
     const checkToken = async () => {
         const accessToken = tokenStorage.getString("access_token") as string
@@ -36,7 +38,7 @@ const Main = () => {
             const currentTime = Date.now() / 1000;
 
             if (decodedRefreshToken.exp < currentTime) {
-                logout()
+                logout(clearData, clearRiderData)
                 Alert.alert("Session Expired, please login again!")
             }
 
