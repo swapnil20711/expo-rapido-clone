@@ -15,7 +15,7 @@ export const roleStyles = StyleSheet.create({
     },
     card: {
         width: '90%',
-        marginTop:40,
+        marginTop: 40,
         borderRadius: 15,
         borderWidth: 1,
         borderColor: '#ccc',
@@ -36,7 +36,7 @@ export const roleStyles = StyleSheet.create({
         height: 120,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        width:'100%',
+        width: '100%',
     },
     description: {
         color: '#666',
